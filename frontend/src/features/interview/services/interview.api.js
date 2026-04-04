@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: [import.meta.env.VITE_BACKEND_RENDER_URL, "http://localhost:3000"],
   withCredentials: true,
 });
 
@@ -60,13 +60,15 @@ export const getAllInterviewReport = async () => {
 export const generateResumePdf = async (interviewReportId) => {
   try {
     const response = await api.post(
-      `/api/interview/resume/pdf/${interviewReportId}`, {} , {
+      `/api/interview/resume/pdf/${interviewReportId}`,
+      {},
+      {
         responseType: "blob",
-      }
+      },
     );
     return response.data;
   } catch (error) {
     console.log("frontend generateResumePdf error aa gya hai!", error);
     throw error;
   }
-}
+};
