@@ -1,6 +1,5 @@
-import { createContext, useState } from "react";
-
-export const interviewContext = createContext();
+import { useState } from "react";
+import { interviewContext as InterviewContext } from "./interview.context-instance";
 
 export const InterviewProvider = ({ children }) => {
   const [loading, setloading] = useState(false);
@@ -8,10 +7,10 @@ export const InterviewProvider = ({ children }) => {
   const [reports, setReports] = useState([]);
 
   return (
-    <interviewContext.Provider
+    <InterviewContext.Provider
       value={{ loading, setloading, report, setReport, reports, setReports }}
     >
       {children}
-    </interviewContext.Provider>
+    </InterviewContext.Provider>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Code, MessageSquare, Map, ChevronDown } from "lucide-react";
 import "../style/interview.scss";
-import { userInterview } from "../hooks/useInterview";
+import { useInterview } from "../hooks/useInterview";
 import { useParams } from "react-router";
 import { RiGeminiFill } from "react-icons/ri";
 
@@ -9,14 +9,14 @@ const Interview = () => {
   const [activeTab, setActiveTab] = useState("technical");
   const [openBehavIndex, setOpenBehavIndex] = useState(0);
   const [openTechIndex, setOpenTechIndex] = useState(0);
-  const { report, getReportById, getResumePdf} = userInterview();
+  const { report, getReportById, getResumePdf } = useInterview();
   const { interviewId } = useParams();
 
   useEffect(() => {
     if (interviewId && !report) {
       getReportById(interviewId);
     }
-  }, [interviewId, report]);
+  }, [interviewId, report, getReportById]);
 
   if (!report) {
     return (
@@ -67,7 +67,12 @@ const Interview = () => {
               Preparation Road Map
             </button>
           </div>
-          <button className="gemini-btn" onClick={() => {getResumePdf(interviewId)}}>
+          <button
+            className="gemini-btn"
+            onClick={() => {
+              getResumePdf(interviewId);
+            }}
+          >
             <RiGeminiFill className="gemini-icon" size={35} />
             <span>Dawnload Ai Resume</span>
           </button>

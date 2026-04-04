@@ -5,14 +5,10 @@ import {
   generateResumePdf,
 } from "../services/interview.api";
 import { useContext } from "react";
-import { interviewContext } from "../interview.context";
-import { useEffect } from "react";
-import { useParams } from "react-router";
+import { interviewContext } from "../interview.context-instance";
 
-
-export const userInterview = () => {
+export const useInterview = () => {
   const context = useContext(interviewContext);
-  const { interviewId } = useParams();
 
   if (!context) {
     throw new Error("useInterview must be used within an interviewProvider!");
@@ -65,13 +61,17 @@ export const userInterview = () => {
     try {
       response = await getAllInterviewReport();
       setReports(response.interviewReports);
+      return response.interviewReports;
     } catch (error) {
+      if (error.response?.status === 401) {
+        setReports([]);
+        return [];
+      }
       console.log("frontend getAllReport error aa rha hai!", error);
       throw error;
     } finally {
       setloading(false);
     }
-    return response.interviewReports;
   };
 
   const getResumePdf = async (interviewReportId) => {
@@ -100,14 +100,6 @@ export const userInterview = () => {
     }
   };
 
-  useEffect(() => {
-    if (interviewId) {
-      getReportById(interviewId);
-    } else {
-      getAllReports();
-    }
-  }, [interviewId]);
-
   return {
     loading,
     report,
@@ -116,6 +108,5 @@ export const userInterview = () => {
     getAllReports,
     getReportById,
     getResumePdf,
-    
   };
 };

@@ -1,11 +1,4 @@
-import axios from "axios";
-
-const backendUrl =
-  import.meta.env.VITE_BACKEND_RENDER_URL || "http://localhost:3000";
-const api = axios.create({
-  baseURL: backendUrl,
-  withCredentials: true,
-});
+import { api } from "../../../services/api";
 
 /**
  * @description service to generate interview report based on user self description, resume and job description.

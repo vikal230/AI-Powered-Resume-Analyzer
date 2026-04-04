@@ -5,6 +5,15 @@ import jwt from "jsonwebtoken";
 // import cookieParser from "cookie-parser";
 import blocklistModel from "../models/blocklist.model.js";
 import interviewReportModel from "../models/interviewReport.model.js";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 24 * 60 * 60 * 1000,
+};
 //! register controller
 /**
  * @name registerUserController
@@ -48,7 +57,7 @@ export const registerUserController = async (req, res) => {
       },
     );
 
-    res.cookie("token", token);
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
       success: true,
@@ -76,8 +85,6 @@ export const registerUserController = async (req, res) => {
 export const loginUserController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
-
 
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -103,15 +110,7 @@ export const loginUserController = async (req, res) => {
       },
     );
 
-    res.cookie(
-      "token",
-      token,
-      //    {
-      //   httpOnly: true,
-      //   secure: true,
-      //   sameSite: "strict",
-      // }
-    );
+    res.cookie("token", token, cookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -142,7 +141,7 @@ export const logoutUserController = async (req, res) => {
     if (token) {
       await blocklistModel.create({ token });
     }
-    res.clearCookie("token");
+    res.clearCookie("token", cookieOptions);
     return res.status(200).json({
       success: true,
       message: "user logout out successfully",

@@ -1,19 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Briefcase, User, UploadCloud, Info, Sparkles } from "lucide-react";
 import "../style/home.scss";
-import { userInterview } from "../hooks/useInterview";
+import { useInterview } from "../hooks/useInterview";
 import { useNavigate } from "react-router-dom";
-import {useAuth} from "../../auth/hooks/useAuth"
+import { useAuth } from "../../auth/hooks/useAuth";
 
 
 const Home = () => {
-  const {user, handleLogout} = useAuth()
-  const { loading, generateReport, reports } = userInterview();
+  const { user, handleLogout } = useAuth();
+  const { loading, generateReport, reports, getAllReports } = useInterview();
 
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const resumeInputRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getAllReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleGenerateReport = async () => {
     const resume = resumeInputRef.current.files[0];

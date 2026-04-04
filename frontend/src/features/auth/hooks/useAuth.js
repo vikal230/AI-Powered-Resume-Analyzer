@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AuthContext } from "../auth.context";
-import { login, register, logout } from "../services/auth.api";
+import { AuthContext } from "../auth.context-instance";
+import { getUser, login, register, logout } from "../services/auth.api";
 export const useAuth = () => {
   const context = useContext(AuthContext);
   const { user, setUser, loading, setLoading } = context;
@@ -10,8 +10,14 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await login({ email, password });
+      const currentUser = await getUser();
 
-      if (data && data.user) {
+      if (currentUser?.user) {
+        setUser(currentUser.user);
+        return true;
+      }
+
+      if (data?.user) {
         setUser(data.user);
         return true;
       }
@@ -27,9 +33,12 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await register({ userName, email, password });
-      setUser(data.user);
+      const currentUser = await getUser();
+      setUser(currentUser?.user || data?.user || null);
+      return Boolean(currentUser?.user || data?.user);
     } catch (error) {
       console.log(error);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -41,7 +50,7 @@ export const useAuth = () => {
     try {
       const data = await logout();
       setUser(null);
-      return data
+      return data;
     } catch (error) {
       console.log(error);
     } finally {

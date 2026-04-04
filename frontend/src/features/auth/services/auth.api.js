@@ -1,10 +1,4 @@
-import axios from "axios";
-const backendUrl =
-  import.meta.env.VITE_BACKEND_RENDER_URL || "http://localhost:3000";
-const api = axios.create({
-  baseURL: backendUrl,
-  withCredentials: true,
-});
+import { api } from "../../../services/api";
 
 export const register = async ({ userName, email, password }) => {
   try {
@@ -44,6 +38,10 @@ export const getUser = async () => {
     const response = await api.get("/api/auth/get-me");
     return response.data;
   } catch (error) {
+    if (error.response?.status === 401) {
+      return null;
+    }
     console.log("frontend get-me user error aa gya hai!", error);
+    throw error;
   }
 };
