@@ -76,6 +76,8 @@ export const registerUserController = async (req, res) => {
 export const loginUserController = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
+
 
     const user = await userModel.findOne({ email });
     if (!user) {

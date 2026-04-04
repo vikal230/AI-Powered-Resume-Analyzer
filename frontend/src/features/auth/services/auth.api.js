@@ -1,11 +1,12 @@
 import axios from "axios";
-
+const backendUrl =
+  import.meta.env.VITE_BACKEND_RENDER_URL || "http://localhost:3000";
 const api = axios.create({
-  baseURL: [import.meta.env.VITE_BACKEND_RENDER_URL,"http://localhost:3000"],
+  baseURL: backendUrl,
   withCredentials: true,
 });
 
-export const register = async ({userName, email, password}) => {
+export const register = async ({ userName, email, password }) => {
   try {
     const response = await api.post("/api/auth/register", {
       userName,
@@ -15,17 +16,17 @@ export const register = async ({userName, email, password}) => {
     return response.data;
   } catch (error) {
     console.log("frontend register error aaa gya hai!", error);
-    throw error
+    throw error;
   }
 };
 
-export const login = async ({email, password}) => {
+export const login = async ({ email, password }) => {
   try {
     const response = await api.post("/api/auth/login", { email, password });
     return response.data;
   } catch (error) {
     console.log("frontend login error aaa gya hai!", error);
-    throw error
+    throw error;
   }
 };
 
