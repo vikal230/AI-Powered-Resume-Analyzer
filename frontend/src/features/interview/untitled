@@ -1,0 +1,175 @@
+{
+  "_id": {
+    "$oid": "69b8d4dc45e9975a85b3c16a"
+  },
+  "user": {
+    "$oid": "69b8cde0205e76f11eb35b57"
+  },
+  "matchScore": 85,
+  "technicalQuestion": [
+    {
+      "question": "Can you walk me through the end-to-end user and admin experience in your 'ekart' e-commerce platform, focusing on how different MERN components interact?",
+      "intention": "To assess understanding of full-stack MERN architecture, component interaction, and data flow in a complex application.",
+      "answer": "I would start by explaining the frontend user journey (browsing, adding to cart, checkout with Razorpay, Google OAuth login). Then I'd detail the backend API calls for each action, database interactions (MongoDB for products, users, orders), and the admin panel's CRUD operations. I'd specifically highlight how React components render data from Express.js APIs, and how Node.js services handle business logic and interact with MongoDB."
+    },
+    {
+      "question": "In your 'Barber Booking Application', you mentioned managing slot availability and time management. How did you implement the logic to prevent double bookings and ensure real-time updates for slot availability?",
+      "intention": "To evaluate problem-solving skills, database transaction management, and real-time data handling for a specific business logic.",
+      "answer": "I implemented a booking schema in MongoDB that included date, time slots, and barber IDs. When a user selects a slot, I perform a check to see if it's already booked. For concurrency, I used optimistic locking or a form of transaction-like logic where a slot status is updated immediately upon selection (e.g., 'pending') and confirmed or reverted based on payment success/failure. Real-time updates could be achieved using WebSockets or frequent polling for critical views."
+    },
+    {
+      "question": "You integrated Razorpay for secure checkouts in 'ekart'. Can you explain the complete flow, from the user clicking 'pay' to the transaction being successfully recorded, including both client-side and server-side interactions?",
+      "intention": "To understand practical experience with payment gateway integration, secure transaction handling, and server-client communication.",
+      "answer": "When a user clicks 'pay', my frontend makes an API call to my Node.js backend to create an order with Razorpay, passing the amount and currency. The backend then receives an 'order_id' from Razorpay and sends it back to the frontend. The frontend then initializes the Razorpay SDK with this 'order_id' and user details. After successful payment on the Razorpay popup, a success callback is triggered on the frontend, sending payment details (e.g., 'razorpay_payment_id') to my backend. The backend then verifies the payment's authenticity with Razorpay's API using a signature and updates my database (e.g., marking the order as 'paid')."
+    },
+    {
+      "question": "In 'TechWave', you implemented robust user authentication flows. Can you describe your choice of authentication mechanism (e.g., JWT, sessions) and how you secured user data during registration and login?",
+      "intention": "To assess knowledge of authentication best practices, security considerations (hashing, salting), and specific implementation choices.",
+      "answer": "For 'TechWave', I primarily used JWT (JSON Web Tokens) for authentication. During registration, user passwords were hashed using bcrypt with a salt before storing them in MongoDB. On login, the provided password is hashed and compared with the stored hash. If they match, a JWT is generated, containing user ID and roles, signed with a secret key, and sent to the client (typically in an HTTP-only cookie or local storage). This token is then sent with subsequent requests for authorization, and the backend verifies its authenticity and expiry."
+    },
+    {
+      "question": "Your resume mentions 'Clean Code Architecture' and 'scalable folder architecture'. Can you elaborate on the principles you followed for organizing your MERN projects, especially for the frontend and backend of a large application like 'ekart'?",
+      "intention": "To gauge understanding of software design principles, maintainability, and best practices for project structure.",
+      "answer": "For 'ekart', I followed a modular and feature-based architecture. On the frontend, React components were organized by feature (e.g., 'Auth', 'Products', 'Cart') with subfolders for components, pages, hooks, and services. Context API or Redux was used for state management. On the backend, I structured Express.js by routes, controllers, services, and models. Controllers handle requests and responses, services encapsulate business logic, and models define database schemas. This separation of concerns improves readability, maintainability, and scalability."
+    },
+    {
+      "question": "You used Cloudinary for image storage. What was your process for integrating it, and what considerations did you have regarding image optimization and security?",
+      "intention": "To understand practical experience with third-party media storage, API integration, and performance/security awareness.",
+      "answer": "I integrated Cloudinary by sending image files from the frontend to my Node.js backend. The backend then uses the Cloudinary SDK to upload the images, receiving a secure URL in return. This URL is then stored in my MongoDB database (e.g., for product images in 'ekart'). For optimization, Cloudinary automatically handles various transformations and formats. For security, I ensure uploads are authorized on the backend, and that Cloudinary's secure upload presets and access controls are configured appropriately, preventing unauthorized uploads or access."
+    }
+  ],
+  "behavioralQuestion": [
+    {
+      "question": "You mentioned that you face a little difficulty verbally explaining your code architecture and project flow. Can you describe a specific instance where this challenge arose and what steps you took, or would take, to improve your communication?",
+      "intention": "To directly address the candidate's self-identified weakness, assess self-awareness, and willingness to improve on critical soft skills.",
+      "answer": "During a hackathon, I built a complex feature with intricate state management. When presenting to judges, I found myself getting lost in technical details rather than conveying the high-level impact and flow. To improve, I've started practicing explaining my projects to non-technical friends, drawing diagrams, and preparing concise summaries focusing on 'what' and 'why' before 'how'. I'm also actively seeking opportunities to present and discuss my code more often."
+    },
+    {
+      "question": "Tell me about a time you encountered a significant technical challenge while building one of your projects (e.g., the slot management in the Barber Booking App). How did you approach problem-solving, and what was the outcome?",
+      "intention": "To evaluate problem-solving methodology, resilience, and learning from difficult situations.",
+      "answer": "The slot management in the Barber Booking App was challenging due to concurrency. Initially, users could theoretically book the same slot simultaneously. My approach was to first thoroughly research existing solutions for booking systems. I then broke down the problem into smaller parts: database schema for slots, API for booking, and front-end display. I prototyped a solution involving checking slot availability and using a transaction-like approach (marking a slot as 'temporarily reserved') before final confirmation. This significantly reduced the chances of double bookings and improved data integrity."
+    },
+    {
+      "question": "As an intern, you'll be learning a lot. Describe a time you had to learn a completely new technology or framework quickly to complete a project or task. What was your process, and how effective was it?",
+      "intention": "To gauge adaptability, learning ability, and resourcefulness, which are crucial for an intern.",
+      "answer": "When I decided to integrate Google OAuth into 'ekart', it was a completely new concept for me. My process involved first reading the official Google documentation thoroughly. Then I looked for tutorials and example implementations, starting with a minimal working example in a separate repository. I broke down the integration into smaller steps: setting up Google Developer Console, implementing client-side logic, and then handling the callback on the server-side. This iterative approach, combined with active debugging, allowed me to successfully integrate it within a few days."
+    },
+    {
+      "question": "In your projects, have you ever received feedback on your code or design choices? How do you typically react to constructive criticism, and what's an example of how you've incorporated feedback?",
+      "intention": "To assess openness to feedback, teamwork potential, and ability to improve based on external input.",
+      "answer": "Yes, while developing 'ekart', a mentor reviewed my initial backend structure and suggested that my controller logic was doing too much and should be moved into separate service layers for better modularity and reusability. I initially thought my structure was fine, but after understanding the benefits for scalability and testing, I refactored a significant portion of my backend. This experience taught me the value of separation of concerns and made my code much cleaner and easier to maintain."
+    }
+  ],
+  "skillGap": [
+    {
+      "skill": "Technical Communication (Verbally Explaining Architecture and Project Flow)",
+      "severity": "high"
+    },
+    {
+      "skill": "Advanced API Security Concepts (e.g., Rate Limiting, Input Validation beyond basic)",
+      "severity": "medium"
+    },
+    {
+      "skill": "In-depth understanding of Git workflows (e.g., branching strategies, squashing, rebasing for team collaboration)",
+      "severity": "low"
+    }
+  ],
+  "preprationPlan": [
+    {
+      "day": "Day 1",
+      "focus": "MERN Core Fundamentals & Explaining Concepts",
+      "tasks": [
+        "Review React.js lifecycle, hooks, and state management (Context API/Redux basics).",
+        "Practice explaining Node.js/Express.js routing, middleware, and request/response cycle clearly.",
+        "Articulate MongoDB CRUD operations and common query methods.",
+        "Prepare concise, high-level summaries of each MERN component's role."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c16b"
+      }
+    },
+    {
+      "day": "Day 2",
+      "focus": "Project Deep Dive & Verbal Walkthrough",
+      "tasks": [
+        "Select 'ekart' and 'Barber Booking App'. Prepare to verbally walk through their complete architecture, component by component.",
+        "Focus on explaining data flow, database schema choices, and key business logic decisions (e.g., slot management, admin panel).",
+        "Create simple diagrams (mental or on paper) to aid explanation for complex flows."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c16c"
+      }
+    },
+    {
+      "day": "Day 3",
+      "focus": "Authentication & Security",
+      "tasks": [
+        "Review Google OAuth flow in detail: client-side, server-side callback, token handling.",
+        "Study JWT (JSON Web Tokens): generation, verification, and best practices for storing and refreshing tokens.",
+        "Understand password hashing (bcrypt) and common security vulnerabilities in web applications (e.g., XSS, CSRF, SQL Injection, even if MongoDB is NoSQL)."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c16d"
+      }
+    },
+    {
+      "day": "Day 4",
+      "focus": "API Integrations & Handling Edge Cases",
+      "tasks": [
+        "Revisit Razorpay integration: understand different failure scenarios and how your application handles them.",
+        "Review Cloudinary integration: focus on image transformation options, secure URLs, and potential error handling.",
+        "Practice explaining how you would integrate a *new* payment gateway (e.g., Stripe) based on your Razorpay experience.",
+        "Learn about API testing tools like Postman and practice using it to test your own project APIs."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c16e"
+      }
+    },
+    {
+      "day": "Day 5",
+      "focus": "Database Design & Schema Relationships",
+      "tasks": [
+        "Design and justify MongoDB schemas for 'ekart' (Users, Products, Orders, Categories).",
+        "Explain different types of relationships in MongoDB (embedded vs. referenced) and when to use each.",
+        "Discuss indexing strategies for performance in MongoDB.",
+        "Prepare to discuss how you ensure data integrity and consistency in your applications."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c16f"
+      }
+    },
+    {
+      "day": "Day 6",
+      "focus": "Clean Code, Scalable Architecture & Git Workflows",
+      "tasks": [
+        "Review principles of clean code, DRY (Don't Repeat Yourself), and YAGNI (You Aren't Gonna Need It).",
+        "Articulate the benefits of your chosen folder structure and how it supports scalability and maintainability.",
+        "Study common Git commands beyond add/commit/push (e.g., rebase, merge strategies, git stash, resolving conflicts, PR review process).",
+        "Think about basic deployment considerations for a MERN app (e.g., environment variables, PM2, Nginx basics)."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c170"
+      }
+    },
+    {
+      "day": "Day 7",
+      "focus": "Mock Interview & Communication Focus",
+      "tasks": [
+        "Conduct a full mock interview, practicing both technical and behavioral questions.",
+        "Specifically focus on clearly and concisely explaining project architecture and technical solutions without getting overly bogged down in minor details.",
+        "Practice whiteboard coding scenarios for common MERN-related problems.",
+        "Refine answers to behavioral questions, ensuring they follow the STAR method and highlight strengths while acknowledging areas for growth (like communication)."
+      ],
+      "_id": {
+        "$oid": "69b8d4dc45e9975a85b3c171"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-03-17T04:13:16.740Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-17T04:13:16.740Z"
+  },
+  "__v": 0
+}
