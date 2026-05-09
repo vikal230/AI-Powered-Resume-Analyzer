@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Briefcase, User, UploadCloud, Info, Sparkles } from "lucide-react";
+import {
+  Briefcase,
+  User,
+  UploadCloud,
+  Info,
+  Sparkles,
+  CheckCircle2,
+  FileText,
+  Eye,
+} from "lucide-react";
 import "../style/home.scss";
 import { useInterview } from "../hooks/useInterview";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
-
 
 const Home = () => {
   const { user, handleLogout } = useAuth();
@@ -12,6 +20,8 @@ const Home = () => {
 
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
+  const [selectedResumeFile, setSelectedResumeFile] = useState(null);
+  const [resumePreviewUrl, setResumePreviewUrl] = useState("");
   const resumeInputRef = useRef();
   const navigate = useNavigate();
 
@@ -20,20 +30,92 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!selectedResumeFile) {
+      setResumePreviewUrl("");
+      return undefined;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedResumeFile);
+    setResumePreviewUrl(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [selectedResumeFile]);
+
+  const handleResumeChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedResumeFile(file);
+  };
+
+  const handleResumeZoneClick = () => {
+    resumeInputRef.current?.click();
+  };
+
+  const handleResumeZoneKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      resumeInputRef.current?.click();
+    }
+  };
+
   const handleGenerateReport = async () => {
-    const resume = resumeInputRef.current.files[0];
     const data = await generateReport({
       jobDescription,
       selfDescription,
-      resume,
+      resumeFile: selectedResumeFile,
     });
     navigate(`/interview/${data._id}`);
   };
 
   if (loading) {
     return (
-      <main className="loading-screen">
-        <h1>loading your interview plan...</h1>
+      <main
+        className="loading-screen"
+        style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <svg width="44" height="44" viewBox="0 0 50 50" aria-hidden="true">
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="rgba(255,255,255,0.14)"
+              strokeWidth="5"
+            />
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="#ec4899"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeDasharray="32 120"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 25 25"
+                to="360 25 25"
+                dur="0.8s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </svg>
+          <p style={{ margin: 0, color: "#cbd5e1" }}>
+            Loading your interview plan...
+          </p>
+        </div>
       </main>
     );
   }
@@ -97,16 +179,61 @@ const Home = () => {
                 Upload Resume{" "}
                 <span className="best-results">(Best Results)</span>
               </label>
-              <div className="drag-drop-zone">
-                <UploadCloud size={28} className="upload-icon" />
-                <p className="main-text">Click to upload or drag & drop</p>
-                <p className="sub-text">PDF or DOCX (Max 5MB)</p>
+              <div
+                className={`drag-drop-zone ${selectedResumeFile ? "drag-drop-zone--uploaded" : ""}`}
+                onClick={handleResumeZoneClick}
+                onKeyDown={handleResumeZoneKeyDown}
+                role="button"
+                tabIndex={0}
+                aria-label="Upload resume PDF"
+              >
+                {selectedResumeFile ? (
+                  <CheckCircle2 size={28} className="upload-icon upload-icon--success" />
+                ) : (
+                  <UploadCloud size={28} className="upload-icon" />
+                )}
+                <p className="main-text">
+                  {selectedResumeFile
+                    ? "Resume uploaded successfully"
+                    : "Click to upload or drag & drop"}
+                </p>
+                <p className="sub-text">
+                  {selectedResumeFile
+                    ? "Your selected file is ready for analysis."
+                    : "PDF only (Max 3MB)"}
+                </p>
+                {selectedResumeFile && (
+                  <div className="uploaded-file-details">
+                    <div className="uploaded-file-meta">
+                      <FileText size={18} />
+                      <div>
+                        <p className="file-name">{selectedResumeFile.name}</p>
+                        <span className="file-size">
+                          {(selectedResumeFile.size / (1024 * 1024)).toFixed(2)} MB
+                        </span>
+                      </div>
+                    </div>
+                    {resumePreviewUrl && (
+                      <a
+                        className="preview-link"
+                        href={resumePreviewUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Eye size={14} />
+                        View resume
+                      </a>
+                    )}
+                  </div>
+                )}
                 <input
                   type="file"
                   id="resume"
                   name="resume"
                   accept=".pdf"
                   ref={resumeInputRef}
+                  onChange={handleResumeChange}
                 />
               </div>
             </div>

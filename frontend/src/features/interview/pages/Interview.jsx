@@ -9,6 +9,7 @@ const Interview = () => {
   const [activeTab, setActiveTab] = useState("technical");
   const [openBehavIndex, setOpenBehavIndex] = useState(0);
   const [openTechIndex, setOpenTechIndex] = useState(0);
+  const [isDownloadingResume, setIsDownloadingResume] = useState(false);
   const { report, getReportById, getResumePdf } = useInterview();
   const { interviewId } = useParams();
 
@@ -30,6 +31,15 @@ const Interview = () => {
     if (score >= 80) return "score--high";
     if (score >= 50) return "score--mid";
     return "score--low";
+  };
+
+  const handleResumeDownload = async () => {
+    try {
+      setIsDownloadingResume(true);
+      await getResumePdf(interviewId);
+    } finally {
+      setIsDownloadingResume(false);
+    }
   };
 
   return (
@@ -69,12 +79,45 @@ const Interview = () => {
           </div>
           <button
             className="gemini-btn"
-            onClick={() => {
-              getResumePdf(interviewId);
-            }}
+            onClick={handleResumeDownload}
+            disabled={isDownloadingResume}
           >
-            <RiGeminiFill className="gemini-icon" size={35} />
-            <span>Dawnload Ai Resume</span>
+            {isDownloadingResume ? (
+              <svg width="22" height="22" viewBox="0 0 50 50" aria-hidden="true">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.18)"
+                  strokeWidth="5"
+                />
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  strokeDasharray="32 120"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 25 25"
+                    to="360 25 25"
+                    dur="0.8s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </svg>
+            ) : (
+              <RiGeminiFill className="gemini-icon" size={35} />
+            )}
+            <span>
+              {isDownloadingResume ? "Preparing Resume..." : "Dawnload Ai Resume"}
+            </span>
           </button>
         </nav>
 

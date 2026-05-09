@@ -173,6 +173,10 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
         padding: 40px 20px;
         text-align: center;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
         transition: all 0.2s;
         cursor: pointer;
 
@@ -181,9 +185,24 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
           background-color: lighten($input-bg, 2%);
         }
 
+        &:focus-visible {
+          outline: none;
+          border-color: $primary-pink;
+          box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+        }
+
+        &--uploaded {
+          border-color: rgba(34, 197, 94, 0.55);
+          background-color: rgba(34, 197, 94, 0.08);
+        }
+
         .upload-icon {
           color: $primary-pink;
           margin-bottom: 12px;
+        }
+
+        .upload-icon--success {
+          color: #22c55e;
         }
 
         .main-text {
@@ -197,14 +216,71 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
           color: $text-muted;
         }
 
-        input[type="file"] {
-          position: absolute;
-          top: 0;
-          left: 0;
+        .uploaded-file-details {
           width: 100%;
-          height: 100%;
-          opacity: 0;
-          cursor: pointer;
+          margin-top: 10px;
+          padding: 12px 14px;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          background-color: rgba(255, 255, 255, 0.04);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          text-align: left;
+
+          @media (max-width: 480px) {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+
+        .uploaded-file-meta {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 0;
+          color: #dbeafe;
+
+          svg {
+            flex-shrink: 0;
+          }
+
+          div {
+            min-width: 0;
+          }
+        }
+
+        .file-name {
+          margin: 0 0 4px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: $text-main;
+          word-break: break-word;
+        }
+
+        .file-size {
+          font-size: 0.78rem;
+          color: $text-muted;
+        }
+
+        .preview-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: #86efac;
+          text-decoration: none;
+          font-size: 0.82rem;
+          font-weight: 600;
+          flex-shrink: 0;
+
+          &:hover {
+            color: #bbf7d0;
+          }
+        }
+
+        input[type="file"] {
+          display: none;
         }
       }
 

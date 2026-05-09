@@ -6,6 +6,7 @@ import {
 } from "../services/interview.api";
 import { useContext } from "react";
 import { interviewContext } from "../interview.context-instance";
+import toast from "react-hot-toast";
 
 export const useInterview = () => {
   const context = useContext(interviewContext);
@@ -22,6 +23,7 @@ export const useInterview = () => {
     selfDescription,
   }) => {
     setloading(true);
+    const toastId = toast.loading("Generate your report");
     let response = null;
     try {
       response = await generateInterviewReport({
@@ -30,10 +32,12 @@ export const useInterview = () => {
         selfDescription,
       });
       setReport(response.interviewReport);
+      toast.success("Report generated successfully", { id: toastId });
       return response.interviewReport;
       // setReports([...reports, response.interviewReport]);
     } catch (error) {
       console.log("frontend generateReport error aa gya hai!", error);
+      toast.error("Unable to generate report", { id: toastId });
       throw error;
     } finally {
       setloading(false);
@@ -76,6 +80,7 @@ export const useInterview = () => {
 
   const getResumePdf = async (interviewReportId) => {
     setloading(true);
+    const toastId = toast.loading("Download your resume");
 
     try {
       const response = await generateResumePdf(interviewReportId);
@@ -91,9 +96,11 @@ export const useInterview = () => {
       );
       document.body.appendChild(link);
       link.click();
+      toast.success("Resume downloaded successfully", { id: toastId });
       return response;
     } catch (error) {
       console.log("frontend generateResume error aa gya hai!", error);
+      toast.error("Unable to download resume", { id: toastId });
       throw error;
     } finally {
       setloading(false);
