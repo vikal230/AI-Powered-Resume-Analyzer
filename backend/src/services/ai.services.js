@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { json, z } from "zod";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ quiet: true });
 import puppeteer from "puppeteer";
 
 const client = new GoogleGenAI({

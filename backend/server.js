@@ -7,7 +7,7 @@ import cors from "cors";
 import interviewRoute from "./src/routes/interview.routes.js";
 // import  generateInterviewReport  from "./src/services/ai.services.js";
 // import {resume, jobDescription, selfDescription} from "./src/services/temp.js"
-dotenv.config();
+dotenv.config({ quiet: true });
 const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
