@@ -3,9 +3,13 @@ import { useAuth } from "../hooks/useAuth";
 
 const Protected = ({children}) => {
   const { loading, user } = useAuth();
+  const hasAuthSession =
+    window.sessionStorage.getItem("resumeAuthSession") === "true";
   const loadingText = window.location.pathname.startsWith("/interview/")
     ? "Loading Interview..."
-    : "Loading Home...";
+    : !hasAuthSession
+      ? "Loading Login..."
+      : "Loading Home...";
 
   if (loading) {
     return (

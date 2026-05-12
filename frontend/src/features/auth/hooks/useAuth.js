@@ -16,12 +16,14 @@ export const useAuth = () => {
 
       if (currentUser?.user) {
         setUser(currentUser.user);
+        window.sessionStorage.setItem("resumeAuthSession", "true");
         toast.success("Login successful", { id: toastId });
         return true;
       }
 
       if (data?.user) {
         setUser(data.user);
+        window.sessionStorage.setItem("resumeAuthSession", "true");
         toast.success("Login successful", { id: toastId });
         return true;
       }
@@ -42,6 +44,9 @@ export const useAuth = () => {
       const data = await register({ userName, email, password });
       const currentUser = await getUser();
       setUser(currentUser?.user || data?.user || null);
+      if (currentUser?.user || data?.user) {
+        window.sessionStorage.setItem("resumeAuthSession", "true");
+      }
       const isRegistered = Boolean(currentUser?.user || data?.user);
       if (isRegistered) {
         toast.success("Account created successfully", { id: toastId });
@@ -65,6 +70,7 @@ export const useAuth = () => {
     try {
       const data = await logout();
       setUser(null);
+      window.sessionStorage.removeItem("resumeAuthSession");
       toast.success("Logged out successfully", { id: toastId });
       return data;
     } catch (error) {

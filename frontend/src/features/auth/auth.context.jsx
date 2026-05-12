@@ -13,9 +13,15 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const data = await getUser();
         setUser(data?.user || null);
+        if (data?.user) {
+          window.sessionStorage.setItem("resumeAuthSession", "true");
+        } else {
+          window.sessionStorage.removeItem("resumeAuthSession");
+        }
       } catch (error) {
         console.error(error);
         setUser(null);
+        window.sessionStorage.removeItem("resumeAuthSession");
       } finally {
         if (shouldShowAuthLoader) {
           setLoading(false);
