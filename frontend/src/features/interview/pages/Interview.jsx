@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Code, MessageSquare, Map, ChevronDown } from "lucide-react";
 import "../style/interview.scss";
 import { useInterview } from "../hooks/useInterview";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { RiGeminiFill } from "react-icons/ri";
 
 const Interview = () => {
@@ -48,6 +48,9 @@ const Interview = () => {
         {/* --- LEFT NAVIGATION --- */}
         <nav className="interview-nav">
           <div>
+            <Link to="/" className="interview-home-link">
+              Back to Home
+            </Link>
             <div className="interview-nav__label">Sections</div>
             <button
               className={`interview-nav__item ${activeTab === "technical" ? "interview-nav__item--active" : ""}`}

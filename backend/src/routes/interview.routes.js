@@ -5,6 +5,7 @@ import { authUser } from "../middleware/auth.middleware.js";
 import {
   getInterviewReportByIdController,
   getAllInterviewReportController,
+  deleteInterviewReportController,
 } from "../controllers/interview.controller.js";
 import { generateResumePdfController } from "../controllers/interview.controller.js";
 
@@ -35,6 +36,13 @@ interviewRoute.get("/report/:interviewId", authUser, getInterviewReportByIdContr
  * @access private
  */
 interviewRoute.get("/", authUser, getAllInterviewReportController)
+
+/**
+ * @route DELETE /api/interview/:interviewId
+ * @description delete interview report of logged in user.
+ * @access private
+ */
+interviewRoute.delete("/:interviewId", authUser, deleteInterviewReportController)
 
 /**
  * @route post/api/interview/resume/pdf

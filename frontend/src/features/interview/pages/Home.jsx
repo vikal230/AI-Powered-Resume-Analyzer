@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   FileText,
   Eye,
+  MoreHorizontal,
 } from "lucide-react";
 import "../style/home.scss";
 import { useInterview } from "../hooks/useInterview";
@@ -16,12 +17,14 @@ import { useAuth } from "../../auth/hooks/useAuth";
 
 const Home = () => {
   const { user, handleLogout } = useAuth();
-  const { loading, generateReport, reports, getAllReports } = useInterview();
+  const { loading, generateReport, reports, getAllReports, handleDeleteReport } =
+    useInterview();
 
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const [selectedResumeFile, setSelectedResumeFile] = useState(null);
   const [resumePreviewUrl, setResumePreviewUrl] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
   const resumeInputRef = useRef();
   const navigate = useNavigate();
 
@@ -67,6 +70,14 @@ const Home = () => {
       resumeFile: selectedResumeFile,
     });
     navigate(`/interview/${data._id}`);
+  };
+
+  const handleDeleteClick = async (e, interviewId) => {
+    e.stopPropagation();
+    const isDeleted = await handleDeleteReport(interviewId);
+    if (isDeleted) {
+      setOpenMenuId(null);
+    }
   };
 
   if (loading) {
@@ -293,7 +304,30 @@ const Home = () => {
                 className="report-item"
                 onClick={() => navigate(`/interview/${report._id}`)}
               >
-                <h3>{report.title || "Untitled Position"}</h3>
+                <div className="report-item__top">
+                  <h3>{report.title || "Untitled Position"}</h3>
+                  <div className="report-actions">
+                    <button
+                      className="report-menu-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenMenuId(
+                          openMenuId === report._id ? null : report._id,
+                        );
+                      }}
+                    >
+                      <MoreHorizontal size={18} />
+                    </button>
+                    {openMenuId === report._id && (
+                      <button
+                        className="report-delete-btn"
+                        onClick={(e) => handleDeleteClick(e, report._id)}
+                      >
+                        Delete report
+                      </button>
+                    )}
+                  </div>
+                </div>
                 <p className="report-meta">
                   Generated On {new Date(report.createdAt).toLocaleDateString()}
                 </p>

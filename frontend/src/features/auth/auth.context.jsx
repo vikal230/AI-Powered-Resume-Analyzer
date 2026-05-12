@@ -3,8 +3,10 @@ import { getUser } from "./services/auth.api";
 import { AuthContext } from "./auth.context-instance";
 
 export const AuthContextProvider = ({ children }) => {
+  const publicPaths = ["/login", "/register"];
+  const shouldShowAuthLoader = !publicPaths.includes(window.location.pathname);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(shouldShowAuthLoader);
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -15,11 +17,13 @@ export const AuthContextProvider = ({ children }) => {
         console.error(error);
         setUser(null);
       } finally {
-        setLoading(false);
+        if (shouldShowAuthLoader) {
+          setLoading(false);
+        }
       }
     };
     getAndSetUser();
-  }, []);
+  }, [shouldShowAuthLoader]);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>

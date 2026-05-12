@@ -67,3 +67,13 @@ export const generateResumePdf = async (interviewReportId) => {
     throw error;
   }
 };
+
+export const deleteInterviewReport = async (interviewId) => {
+  try {
+    const response = await api.delete(`/api/interview/${interviewId}`);
+    return response.data;
+  } catch (error) {
+    console.log("frontend deleteInterviewReport error aa gya hai!", error);
+    throw error;
+  }
+};

@@ -115,6 +115,39 @@ export const getAllInterviewReportController = async (req, res) => {
 };
 
 /**
+ * @description controller to delete a report of logged in user.
+ */
+export const deleteInterviewReportController = async (req, res) => {
+  try {
+    const { interviewId } = req.params;
+
+    const deletedReport = await interviewReportModel.findOneAndDelete({
+      _id: interviewId,
+      user: req.user.id,
+    });
+
+    if (!deletedReport) {
+      return res.status(404).json({
+        success: false,
+        message: "interview report not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "interview report deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error in deleteInterviewReportController:", error);
+    return res.status(500).json({
+      success: false,
+      message: "error deleting report",
+      error: error.message,
+    });
+  }
+};
+
+/**
  * @description controller to generate resume PDF based on user self description, resume and job description.
  */
 

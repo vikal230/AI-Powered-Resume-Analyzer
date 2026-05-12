@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Variables
 $bg-dark: #121418;
 $card-bg: #1a1d24;
@@ -182,7 +184,7 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
 
         &:hover {
           border-color: $text-muted;
-          background-color: lighten($input-bg, 2%);
+          background-color: color.adjust($input-bg, $lightness: 2%);
         }
 
         &:focus-visible {
@@ -409,29 +411,85 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
     flex-direction: column;
     gap: 0.75rem;
     margin-top: 15px;
-    align-items: start;
-    background: $primary-gradient;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1000px;
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 1rem;
+    padding: 1.25rem;
 
-    border-radius: 0.5rem;
-    padding: 1rem;
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
 
     .reports-list {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 0.75rem;
-      flex-wrap: wrap;
+      width: 100%;
 
       .report-item {
         background: $card-bg;
         border: 1px solid $border-color;
         border-radius: 0.5rem;
         padding: 1rem;
-        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         cursor: pointer;
         transition: transform 0.2s;
-        flex-shrink: 0;
+        position: relative;
+
+        &:hover {
+          transform: translateY(-2px);
+          border-color: rgba(236, 72, 153, 0.35);
+        }
+
+        &__top {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 0.75rem;
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+          line-height: 1.4;
+        }
+
+        .report-actions {
+          position: relative;
+          flex-shrink: 0;
+        }
+
+        .report-menu-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: 1px solid $border-color;
+          border-radius: 999px;
+          background: $input-bg;
+          color: $text-main;
+          cursor: pointer;
+        }
+
+        .report-delete-btn {
+          position: absolute;
+          top: 38px;
+          right: 0;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          border-radius: 8px;
+          background: #2a1719;
+          color: #fca5a5;
+          padding: 0.55rem 0.75rem;
+          cursor: pointer;
+          white-space: nowrap;
+        }
 
         .match-score {
           font-size: 0.8rem;
@@ -439,6 +497,14 @@ $primary-gradient: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
           color: $primary-pink;
           align-items: flex-start;
         }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+
+      .reports-list {
+        grid-template-columns: 1fr;
       }
     }
   }

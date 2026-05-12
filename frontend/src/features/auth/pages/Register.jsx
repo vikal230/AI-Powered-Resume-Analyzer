@@ -25,7 +25,7 @@ const Register = () => {
   if (loading) {
     return (
       <main
-        style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+        style={{ minHeight: "100vh", display: "grid", placeItems: "center", gap: "10px" }}
       >
         <svg width="44" height="44" viewBox="0 0 50 50" aria-hidden="true">
           <circle
@@ -56,6 +56,7 @@ const Register = () => {
             />
           </circle>
         </svg>
+        <p style={{ margin: 0, color: "#6b7280", fontSize: "14px" }}>Loading Register...</p>
       </main>
     );
   }

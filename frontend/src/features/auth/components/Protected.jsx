@@ -3,11 +3,14 @@ import { useAuth } from "../hooks/useAuth";
 
 const Protected = ({children}) => {
   const { loading, user } = useAuth();
+  const loadingText = window.location.pathname.startsWith("/interview/")
+    ? "Loading Interview..."
+    : "Loading Home...";
 
   if (loading) {
     return (
       <main
-        style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+        style={{ minHeight: "100vh", display: "grid", placeItems: "center", gap: "10px" }}
       >
         <svg width="44" height="44" viewBox="0 0 50 50" aria-hidden="true">
           <circle
@@ -38,6 +41,7 @@ const Protected = ({children}) => {
             />
           </circle>
         </svg>
+        <p style={{ margin: 0, color: "#6b7280", fontSize: "14px" }}>{loadingText}</p>
       </main>
     );
   }

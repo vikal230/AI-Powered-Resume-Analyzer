@@ -3,6 +3,7 @@ import {
   getInterviewReportById,
   getAllInterviewReport,
   generateResumePdf,
+  deleteInterviewReport,
 } from "../services/interview.api";
 import { useContext } from "react";
 import { interviewContext } from "../interview.context-instance";
@@ -107,6 +108,23 @@ export const useInterview = () => {
     }
   };
 
+  const handleDeleteReport = async (interviewId) => {
+    const toastId = toast.loading("Deleting report");
+    try {
+      await deleteInterviewReport(interviewId);
+      setReports((prev) => prev.filter((item) => item._id !== interviewId));
+      if (report?._id === interviewId) {
+        setReport(null);
+      }
+      toast.success("Report deleted successfully", { id: toastId });
+      return true;
+    } catch (error) {
+      console.log("frontend deleteReport error aa gya hai!", error);
+      toast.error("Unable to delete report", { id: toastId });
+      return false;
+    }
+  };
+
   return {
     loading,
     report,
@@ -115,5 +133,6 @@ export const useInterview = () => {
     getAllReports,
     getReportById,
     getResumePdf,
+    handleDeleteReport,
   };
 };

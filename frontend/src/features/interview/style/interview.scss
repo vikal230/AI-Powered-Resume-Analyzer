@@ -173,7 +173,7 @@ $severity-low: #3fb950;
     transition: border-color 0.2s;
 
     &:hover {
-        border-color: lighten($border-color, 8%);
+        border-color: color.adjust($border-color, $lightness: 8%);
     }
 
     &__header {
@@ -235,7 +235,7 @@ $severity-low: #3fb950;
         p {
             margin: 0;
             font-size: 0.835rem;
-            color: lighten($text-muted, 15%);
+            color: color.adjust($text-muted, $lightness: 15%);
             line-height: 1.6;
         }
     }
@@ -339,7 +339,7 @@ $severity-low: #3fb950;
             align-items: flex-start;
             gap: 0.5rem;
             font-size: 0.845rem;
-            color: lighten($text-muted, 12%);
+            color: color.adjust($text-muted, $lightness: 12%);
             line-height: 1.5;
         }
     }
@@ -483,6 +483,7 @@ $severity-low: #3fb950;
 .gemini-btn {
   display: flex;           
   align-items: center;     
+  justify-content: center;
   gap: 8px;                
   padding: 10px 20px;
   background-color: #2c3e50;
@@ -500,4 +501,83 @@ $severity-low: #3fb950;
   .gemini-icon {
     color: white; 
   }
+}
+
+.interview-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 1rem 0.75rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid $border-color;
+  border-radius: 0.5rem;
+  background-color: $bg-panel;
+  color: $text-primary;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:hover {
+    border-color: color.adjust($border-color, $lightness: 8%);
+  }
+}
+
+@media (max-width: 768px) {
+    .interview-page {
+        padding: 0.75rem;
+    }
+
+    .interview-layout {
+        flex-direction: column;
+    }
+
+    .interview-divider {
+        display: none;
+    }
+
+    .interview-nav,
+    .interview-content,
+    .interview-sidebar {
+        width: 100%;
+        max-height: none;
+    }
+
+    .interview-nav,
+    .interview-content,
+    .interview-sidebar {
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .interview-sidebar {
+        order: 2;
+        border-top: 1px solid $border-color;
+    }
+
+    .interview-home-link {
+        margin-left: 0;
+    }
+
+    .interview-content {
+        order: 3;
+        overflow: visible;
+        padding-bottom: 1rem;
+    }
+
+    .content-header {
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .roadmap-day {
+        padding-left: 2.8rem;
+    }
+
+    .roadmap-list::before {
+        left: 22px;
+    }
+
+    .roadmap-day::before {
+        left: 15px;
+    }
 }
