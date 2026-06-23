@@ -6,8 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="margin: 0; padding: 0; background: #1a0a2e">
+    <div id="root">
+      <div
+        style="
+          min-height: 100vh;
+          background: linear-gradient(135deg, #1a0a2e, #2d1b4e, #1a0a2e);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div
+          style="
+            width: 32px;
+            height: 32px;
+            border: 2.5px solid #4a2070;
+            border-top-color: #ec4899;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+          "
+        ></div>
+        <style>
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
